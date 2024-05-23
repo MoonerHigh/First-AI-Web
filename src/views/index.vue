@@ -45,7 +45,7 @@
       </div>
       <!-- End Title -->
 
-      <ul class="mt-16 space-y-5">
+      <ul class="mt-16 space-y-5" ref="chat-list">
         <!-- Chat Bubble -->
         <li
           class="max-w-4xl py-2 px-4 sm:px-6 lg:px-8 mx-auto flex gap-x-2 sm:gap-x-4"
@@ -359,8 +359,8 @@
           <textarea
             class="p-4 pb-12 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
             placeholder="Ask me anything..."
+            v-model="userMessage"
           ></textarea>
-
           <!-- Toolbar -->
           <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white">
             <div class="flex justify-between items-center">
@@ -445,9 +445,11 @@
 
                 <!-- Send Button -->
                 <button
+                  ref="send-button"
                   type="button"
-                  class="inline-flex flex-shrink-0 justify-center items-center size-8 rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  class="inline-flex flex-shrink-0 justify-center items-center size-8 rounded-lg text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 opacity-50 cursor-not-allowed"
                   @click="sendMessage"
+                  disabled
                 >
                   <svg
                     class="flex-shrink-0 size-3.5"
@@ -478,7 +480,63 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      userMessage: "",
+      chatHistory: [],
+    };
+  },
+  methods: {
+    sendMessage() {
+      if (!this.userMessage) return;
+      var $chatList = this.$refs["chat-list"];
+      var $li = document.createElement("li");
+      $li.className = "py-2 sm:py-4";
+      $li.innerHTML = `
+      <li class="py-2 sm:py-4">
+          <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
+            <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
+              <span
+                class="flex-shrink-0 inline-flex items-center justify-center size-[38px] rounded-full bg-gray-600"
+              >
+                <span class="text-sm font-medium text-white leading-none"
+                  >AZ</span
+                >
+              </span>
+
+              <div class="grow mt-2 space-y-3">
+                <p class="text-gray-800">${this.userMessage}</p>
+              </div>
+            </div>
+          </div>
+        </li>
+      `;
+      $chatList.appendChild($li);
+      this.chatHistory.push(this.userMessage);
+      // FIXME: Scroll to the bottom
+      this.$nextTick(() => {
+        $chatList.scrollTo({
+          top: $chatList.scrollHeight,
+          behavior: "smooth",
+        });
+      });
+      this.userMessage = "";
+    },
+  },
+  watch: {
+    userMessage(val) {
+      var $sendButton = this.$refs["send-button"];
+      if (val) {
+        $sendButton.removeAttribute("disabled");
+        $sendButton.classList.remove("opacity-50", "cursor-not-allowed");
+      } else {
+        $sendButton.setAttribute("disabled", true);
+        $sendButton.classList.add("opacity-50", "cursor-not-allowed");
+      }
+    },
+  },
+};
 </script>
 
 <style>
