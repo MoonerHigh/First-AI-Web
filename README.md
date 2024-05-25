@@ -2,7 +2,7 @@
 
 ## 简介
 
-AI 项目的前端。
+AI项目的前端。
 
 后端地址:https://github.com/MoonerHigh/First-AI
 
@@ -17,11 +17,11 @@ AI 项目的前端。
 
 ### 框架
 
-| 框架                        | 说明           | 版本   | 学习指南                    |
-| --------------------------- | -------------- | ------ | --------------------------- |
-| https://cn.vuejs.org/       | Vue 框架       | 3.4.21 | https://cn.vuejs.org/       |
-| https://cn.vitejs.dev/      | 开发与构建工具 | 5.0.4  | https://cn.vitejs.dev/      |
-| https://router.vuejs.org/   | Vue 路由       | 4.3.2  | https://router.vuejs.org/   |
-| https://www.tailwindcss.cn/ | TailWindCSS    | 3.4.3  | https://www.tailwindcss.cn/ |
-| https://www.preline.co/     | preline        | 2.1.0  | https://www.preline.co/     |
-| https://www.axios-http.cn/  | axios          | 1.7.2  | https://www.axios-http.cn/  |
+|           框架 |           说明 |           版本 |       学习指南 |
+| --- | --- | --- | --- |
+|           Vue | Vue 框架 |          3.4.21 |           https://cn.vuejs.org/ |
+|           Vite | 开发与构建工具 |          5.0.4 |          https://cn.vitejs.dev/ |
+|       vue-router | Vue 路由 |          4.3.2 |          https://router.vuejs.org/ |
+|       TailWind | TailWindCSS |          3.4.3 |           https://www.tailwindcss.cn/ |
+|         preline | preline |          2.1.0 |          https://www.preline.co/ |
+|          axios | axios |          1.7.2 |           https://www.axios-http.cn/ |
