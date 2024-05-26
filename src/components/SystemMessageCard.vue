@@ -29,32 +29,8 @@
         class="bg-white border border-gray-200 rounded-lg p-4 space-y-3 dark:bg-neutral-900 dark:border-neutral-700"
       >
         <p class="text-sm text-gray-800 dark:text-white">
-          Preline UI is an open-source set of prebuilt UI components based on
-          the utility-first Tailwind CSS framework.
+          {{ message }}
         </p>
-        <div class="space-y-1.5">
-          <p class="text-sm text-gray-800 dark:text-white">
-            Here're some links to get started
-          </p>
-          <ul>
-            <li>
-              <a
-                class="text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500 dark:hover:text-blue-400"
-                href="../docs/index.html"
-              >
-                Installation Guide
-              </a>
-            </li>
-            <li>
-              <a
-                class="text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500 dark:hover:text-blue-400"
-                href="../docs/frameworks.html"
-              >
-                Framework Guides
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
       <!-- End Card -->
 
@@ -191,7 +167,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['message']
+};
 </script>
 
 <style>

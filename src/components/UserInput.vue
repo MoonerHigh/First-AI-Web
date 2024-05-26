@@ -172,7 +172,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      userInput: "",
+    };
+  },
+  methods: {
+    sendMessage() {
+      this.$emit("send-message", this.userInput);
+      this.userInput = "";
+    },
+  },
+};
 </script>
 
 <style>

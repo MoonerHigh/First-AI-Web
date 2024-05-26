@@ -90,65 +90,94 @@
   <!-- Content -->
   <div class="relative h-screen">
     <div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+      <AI-Title></AI-Title>
       <ul class="mt-16 space-y-5">
-        <!-- Chat Bubble -->
-        <li class="max-w-2xl ms-auto flex justify-end gap-x-2 sm:gap-x-4">
-          <div class="grow text-end space-y-3">
-            <!-- Card -->
-            <div class="inline-block bg-blue-600 rounded-lg p-4 shadow-sm">
-              <p class="text-sm text-white">
-                {{ $route.params.message }}
-              </p>
-            </div>
-            <!-- End Card -->
-          </div>
-
-          <span
-            class="flex-shrink-0 inline-flex items-center justify-center size-[38px] rounded-full bg-gray-600"
-          >
-            <span class="text-sm font-medium text-white leading-none">U</span>
-          </span>
-        </li>
-        <!-- End Chat Bubble -->
-        <message-card></message-card>
+        <template v-for="(message, index) in messages" :key="index">
+          <user-message-card
+            v-if="message.type === 'user'"
+            :message="message.content"
+          ></user-message-card>
+          <system-message-card
+            v-else
+            :message="message.content"
+          ></system-message-card>
+        </template>
       </ul>
     </div>
 
     <!-- Search -->
-    <user-input></user-input>
+    <user-input @send-message="handleReceiveMessage"></user-input>
   </div>
   <!-- End Search -->
   <!-- End Content -->
 </template>
 
 <script>
-import MessageCard from "../components/MessageCard.vue";
-import SideBar from '../components/SideBar.vue';
+import { watch } from "vue";
+import SystemMessageCard from "../components/SystemMessageCard.vue";
+import SideBar from "../components/SideBar.vue";
 import UserInput from "../components/UserInput.vue";
+import UserMessageCard from "../components/UserMessageCard.vue";
+import { getAnswer } from "../utils/api";
+import Title from "../components/Title.vue";
 
 export default {
   components: {
-    "message-card": MessageCard,
+    "system-message-card": SystemMessageCard,
     "user-input": UserInput,
-    "sidebar": SideBar
+    sidebar: SideBar,
+    "user-message-card": UserMessageCard,
+    "AI-Title": Title,
+  },
+  props: {
+    messages: {
+      type: Array,
+      required: true,
+      // validator: (value) => value.every((message) => validateMessage(message)),
+    },
   },
   data() {
     return {
       userInput: "",
+      responseText: "",
+      messages: [],
     };
   },
-  watch: {
-    userInput: function (val) {
-      if (val.length > 0) {
-        this.$refs.sendButton.disabled = false;
-        this.$refs.sendButton.classList.remove(
-          "opacity-50",
-          "cursor-not-allowed"
-        );
-      } else {
-        this.$refs.sendButton.disabled = true;
-        this.$refs.sendButton.classList.add("opacity-50", "cursor-not-allowed");
+  methods: {
+    handleReceiveMessage(message) {
+      this.messages.push({
+        id: this.messages.length + 1,
+        content: message,
+        type: "user",
+      });
+    },
+    async fetchAnswer() {
+      this.responseText = await getAnswer(this.userInput);
+      this.messages.push({
+        id: this.messages.length + 1,
+        content: this.responseText,
+        type: "system",
+      });
+    },
+  },
+  created() {
+    if (this.$route.params.message) {
+      this.handleReceiveMessage(this.$route.params.message);
+    }
+    watch(() => this.userInput, this.fetchAnswer);
+  },
+  computed: {
+    userMessages() {
+      if (!Array.isArray(this.messages)) {
+        return [];
       }
+      return this.messages.filter((message) => message.type === "user");
+    },
+    systemMessages() {
+      if (!Array.isArray(this.messages)) {
+        return [];
+      }
+      return this.messages.filter((message) => message.type === "system");
     },
   },
 };
