@@ -106,20 +106,20 @@
     </div>
 
     <!-- Search -->
-    <user-input @send-message="handleReceiveMessage"></user-input>
+    <user-input @send-message="sendMessage"></user-input>
   </div>
   <!-- End Search -->
   <!-- End Content -->
 </template>
 
 <script>
-import { watch } from "vue";
 import SystemMessageCard from "../components/SystemMessageCard.vue";
 import SideBar from "../components/SideBar.vue";
 import UserInput from "../components/UserInput.vue";
 import UserMessageCard from "../components/UserMessageCard.vue";
-import { getAnswer } from "../utils/api";
 import Title from "../components/Title.vue";
+import { connectToSSE } from "../utils/sse-client";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -129,56 +129,44 @@ export default {
     "user-message-card": UserMessageCard,
     "AI-Title": Title,
   },
-  props: {
-    messages: {
-      type: Array,
-      required: true,
-      // validator: (value) => value.every((message) => validateMessage(message)),
-    },
-  },
   data() {
     return {
       userInput: "",
-      responseText: "",
-      messages: [],
     };
   },
+  computed: {
+    ...mapState(["messages"]),
+  },
   methods: {
-    handleReceiveMessage(message) {
-      this.messages.push({
-        id: this.messages.length + 1,
-        content: message,
-        type: "user",
-      });
+    sendMessage(message) {
+      console.log("Sending message:", message);
+      this.addUserMessage(message);
+      this.startSSE(message);
     },
-    async fetchAnswer() {
-      this.responseText = await getAnswer(this.userInput);
-      this.messages.push({
-        id: this.messages.length + 1,
-        content: this.responseText,
-        type: "system",
+    addUserMessage(message) {
+      this.$store.commit("addMessage", { content: message, type: "user" });
+      console.log("Current messages:", this.$store.state.messages);
+    },
+    startSSE(userMessage) {
+      const url = "http://localhost:8080/ai/generateCharacter";
+      connectToSSE(url, userMessage, {
+        onStart: () => {
+          // Optional: Handle SSE connection start
+        },
+        onChar: (char) => {
+          this.$store.commit("updateSystemMessage", char);
+        },
+        onDone: () => {
+          // Optional: Handle SSE connection end
+        },
+        onError: (error) => {
+          console.error("SSE error:", error);
+        },
       });
     },
   },
   created() {
-    if (this.$route.params.message) {
-      this.handleReceiveMessage(this.$route.params.message);
-    }
-    watch(() => this.userInput, this.fetchAnswer);
-  },
-  computed: {
-    userMessages() {
-      if (!Array.isArray(this.messages)) {
-        return [];
-      }
-      return this.messages.filter((message) => message.type === "user");
-    },
-    systemMessages() {
-      if (!Array.isArray(this.messages)) {
-        return [];
-      }
-      return this.messages.filter((message) => message.type === "system");
-    },
+    this.sendMessage(this.$route.params.message);
   },
 };
 </script>

@@ -9,7 +9,7 @@ export function connectToSSE(url, userInput, handlers) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ input: userInput }),
+    body: JSON.stringify({ message: userInput }),
   })
     .then(async (response) => {
       if (!response.ok) {
