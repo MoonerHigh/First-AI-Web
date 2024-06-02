@@ -18,7 +18,7 @@ AI项目的前端。
 ### 框架
 
 |           框架 |           说明 |           版本 |       学习指南 |
-| --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: |
 |           Vue | Vue 框架 |          3.4.21 |           https://cn.vuejs.org/ |
 |           Vite | 开发与构建工具 |          5.0.4 |          https://cn.vitejs.dev/ |
 |       vue-router | Vue 路由 |          4.3.2 |          https://router.vuejs.org/ |
