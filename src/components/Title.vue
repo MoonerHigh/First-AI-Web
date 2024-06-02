@@ -36,10 +36,10 @@
     </svg>
 
     <h1 class="text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
-      Welcome to Preline AI
+      欢迎使用未来之眼AI
     </h1>
     <p class="mt-3 text-gray-600 dark:text-neutral-400">
-      Your AI-powered copilot for the web
+      你的AI助手，随时为你提供帮助
     </p>
   </div>
   <!-- End Title -->

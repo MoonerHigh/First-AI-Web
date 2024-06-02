@@ -4,24 +4,36 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     messages: [],
-    responseText: "",
+    nextMessageId: 1,
   },
   mutations: {
-    addMessage(state, message) {
+    addUserMessage(state, content) {
+      const message = {
+        id: state.nextMessageId++,
+        content,
+        type: "user",
+      };
       state.messages.push(message);
     },
-    updateSystemMessage(state, char) {
-      state.responseText += char;
-      const systemMessage = {
-        id: state.messages.length + 1,
-        content: state.responseText,
+    addSystemMessage(state, content) {
+      const message = {
+        id: state.nextMessageId++,
+        content,
         type: "system",
       };
-      const index = state.messages.findIndex((msg) => msg.type === "system");
-      if (index !== -1) {
-        state.messages.splice(index, 1, systemMessage);
+      state.messages.push(message);
+    },
+    updateSystemMessageContent(state, char) {
+      const lastMessage = state.messages[state.messages.length - 1];
+      if (lastMessage && lastMessage.type === "system") {
+        lastMessage.content += char;
       } else {
-        state.messages.push(systemMessage);
+        const message = {
+          id: state.nextMessageId++,
+          content: char,
+          type: "system",
+        };
+        state.messages.push(message);
       }
     },
   },

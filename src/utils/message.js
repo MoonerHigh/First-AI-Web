@@ -1,5 +1,8 @@
 export const message = {
-  id: Number,
+  id: {
+    type: Number,
+    required: true,
+  },
   content: String,
   type: {
     type: String,

@@ -5,11 +5,4 @@ module.exports = {
     "node_modules/preline/dist/*.js",
   ],
   plugins: [require("preline/plugin")],
-  theme: {
-    extends: {
-      fontFamily: {
-        sans: ["PingFang SC", "Helvetica Neue", "Arial", "sans-serif"],
-      },
-    },
-  },
 };

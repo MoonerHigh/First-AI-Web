@@ -92,13 +92,13 @@
     <div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
       <AI-Title></AI-Title>
       <ul class="mt-16 space-y-5">
-        <template v-for="(message, index) in messages" :key="index">
+        <template v-for="(message) in messages" :key="message.id">
           <user-message-card
             v-if="message.type === 'user'"
             :message="message.content"
           ></user-message-card>
           <system-message-card
-            v-else
+            v-else-if="message.type === 'system'"
             :message="message.content"
           ></system-message-card>
         </template>
@@ -119,7 +119,7 @@ import UserInput from "../components/UserInput.vue";
 import UserMessageCard from "../components/UserMessageCard.vue";
 import Title from "../components/Title.vue";
 import { connectToSSE } from "../utils/sse-client";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   components: {
@@ -138,14 +138,11 @@ export default {
     ...mapState(["messages"]),
   },
   methods: {
+    ...mapMutations(['addUserMessage', 'addSystemMessage', 'updateSystemMessageContent']),
     sendMessage(message) {
       console.log("Sending message:", message);
       this.addUserMessage(message);
       this.startSSE(message);
-    },
-    addUserMessage(message) {
-      this.$store.commit("addMessage", { content: message, type: "user" });
-      console.log("Current messages:", this.$store.state.messages);
     },
     startSSE(userMessage) {
       const url = "http://localhost:8080/ai/generateCharacter";
@@ -154,7 +151,7 @@ export default {
           // Optional: Handle SSE connection start
         },
         onChar: (char) => {
-          this.$store.commit("updateSystemMessage", char);
+          this.updateSystemMessageContent(char);
         },
         onDone: () => {
           // Optional: Handle SSE connection end

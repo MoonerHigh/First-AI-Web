@@ -184,6 +184,17 @@ export default {
       this.userInput = "";
     },
   },
+  watch: {
+    userInput(value) {
+      if(value.trim().length > 0) {
+        this.$refs.sendButton.disabled = false;
+        this.$refs.sendButton.classList.remove("opacity-50", "cursor-not-allowed");
+      } else {
+        this.$refs.sendButton.disabled = true;
+        this.$refs.sendButton.classList.add("opacity-50", "cursor-not-allowed");
+      }
+    },
+  },
 };
 </script>
 
