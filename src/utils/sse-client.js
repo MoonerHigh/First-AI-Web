@@ -1,6 +1,15 @@
-// src/sse-client.js
 import { createParser } from "eventsource-parser";
 
+/**
+ * Connects to the Server-Sent Events (SSE) endpoint and handles the received events.
+ * @param {string} url - The URL of the SSE endpoint.
+ * @param {string} userInput - The user input to send to the SSE endpoint.
+ * @param {Object} handlers - Object containing event handlers for different SSE events.
+ * @param {Function} handlers.onStart - Event handler for the "start" event.
+ * @param {Function} handlers.onChar - Event handler for the "message" event.
+ * @param {Function} handlers.onDone - Event handler for the "done" event.
+ * @param {Function} handlers.onError - Event handler for the "error" event.
+ */
 export function connectToSSE(url, userInput, handlers) {
   const { onStart, onChar, onDone, onError } = handlers;
 

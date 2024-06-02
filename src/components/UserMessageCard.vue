@@ -12,11 +12,16 @@
         <!-- End Card -->
       </div>
 
-      <span
-        class="flex-shrink-0 inline-flex items-center justify-center size-[38px] rounded-full bg-gray-600"
-      >
-        <span class="text-sm font-medium text-white leading-none">U</span>
-      </span>
+      <div class="relative inline-block">
+        <img
+          class="inline-block size-[38px] rounded-lg"
+          src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+          alt="Image Description"
+        />
+        <span
+          class="absolute bottom-4 end-0 block size-3 rounded-full transform translate-y-1/2 translate-x-1/2 ring-2 ring-white bg-teal-400 dark:ring-neutral-900"
+        ></span>
+      </div>
     </li>
     <!-- End Chat Bubble -->
   </div>
