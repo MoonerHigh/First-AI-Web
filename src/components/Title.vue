@@ -1,7 +1,7 @@
 <template>
   <!-- Title -->
   <div class="text-center">
-    <svg
+    <!-- <svg
       class="w-28 h-auto mx-auto mb-4"
       width="116"
       height="32"
@@ -33,7 +33,7 @@
         fill="currentColor"
         class="fill-blue-600 dark:fill-white"
       />
-    </svg>
+    </svg> -->
 
     <h1 class="text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
       欢迎使用未来之眼AI
